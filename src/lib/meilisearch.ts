@@ -8,7 +8,7 @@
 'use strict'
 
 import { Index } from './indexes'
-import { MeiliSearchApiError } from '../errors'
+import { MeiliSearchApiError, MeiliSearchCommunicationError } from '../errors'
 import {
   Config,
   IndexOptions,
@@ -66,16 +66,22 @@ class MeiliSearch {
       if (e.errorCode === 'index_not_found') {
         return this.createIndex(uid, options)
       }
-      throw new MeiliSearchApiError(e, e.status)
+      if (e.type !== 'MeiliSearchCommunicationError') {
+        throw new MeiliSearchApiError(e, e.status)
+      }
+      if (e.type === 'MeiliSearchCommunicationError') {
+        throw new MeiliSearchCommunicationError(e.message, e, e.stack)
+      }
+      throw e
     }
   }
 
   /**
-   * List all indexes in the database
+   * Get all indexes in the database
    * @memberof MeiliSearch
-   * @method listIndexes
+   * @method getIndexes
    */
-  async listIndexes(): Promise<IndexResponse[]> {
+  async getIndexes(): Promise<IndexResponse[]> {
     const url = `indexes`
     return await this.httpRequest.get<IndexResponse[]>(url)
   }
@@ -89,7 +95,7 @@ class MeiliSearch {
     uid: string,
     options: IndexOptions = {}
   ): Promise<Index<T>> {
-    return await Index.create<T>(this.config, uid, options)
+    return await Index.create<T>(uid, options, this.config)
   }
 
   /**
@@ -182,9 +188,9 @@ class MeiliSearch {
   /**
    * Get the stats of all the database
    * @memberof MeiliSearch
-   * @method stats
+   * @method getStats
    */
-  async stats(): Promise<Stats> {
+  async getStats(): Promise<Stats> {
     const url = `stats`
     return await this.httpRequest.get<Stats>(url)
   }
@@ -196,9 +202,9 @@ class MeiliSearch {
   /**
    * Get the version of MeiliSearch
    * @memberof MeiliSearch
-   * @method version
+   * @method getVersion
    */
-  async version(): Promise<Version> {
+  async getVersion(): Promise<Version> {
     const url = `version`
     return await this.httpRequest.get<Version>(url)
   }

@@ -72,11 +72,11 @@ NB: you can also download MeiliSearch from **Homebrew** or **APT**.
 
 ### Import <!-- omit in toc -->
 
-Depending on the environment on which you are using MeiliSearch, imports may differ.
+Depending on the environment in which you are using MeiliSearch, imports may differ.
 
 #### Import Syntax <!-- omit in toc -->
 
-Usage in a ES module environment:
+Usage in an ES module environment:
 
 ```javascript
 import { MeiliSearch } from 'meilisearch'
@@ -311,7 +311,7 @@ This repository also contains [more examples](./examples).
 
 ## ⚙️ Development Workflow and Contributing
 
-Any new contribution is more than welcome in this project!
+Any new contribution is more than welcome to this project!
 
 If you want to know more about the development workflow or want to contribute, please visit our [contributing guidelines](/CONTRIBUTING.md) for detailed instructions!
 
@@ -323,17 +323,17 @@ If you want to know more about the development workflow or want to contribute, p
 
 `client.index<T>('xxx').search(query: string, options: SearchParams = {}, config?: Partial<Request>): Promise<SearchResponse<T>>`
 
-- Make a search request using GET method (slower than the search method):
+- Make a search request using the GET method (slower than the search method):
 
 `client.index<T>('xxx').searchGet(query: string, options: SearchParams = {}, config?: Partial<Request>): Promise<SearchResponse<T>>`
 
 ### Indexes <!-- omit in toc -->
 
-- List all indexes:
+- Get all indexes:
 
-`client.listIndexes(): Promise<IndexResponse[]>`
+`client.getIndexes(): Promise<IndexResponse[]>`
 
-- Create new index:
+- Create a new index:
 
 `client.createIndex<T>(uid: string, options?: IndexOptions): Promise<Index<T>>`
 
@@ -345,7 +345,7 @@ If you want to know more about the development workflow or want to contribute, p
 
 `client.getIndex<T>(uid: string): Promise<Index<T>>`
 
-- Get or create index if it does not exist
+- Get or create an index if it does not exist
 
 `client.getOrCreateIndex<T>(uid: string, options?: IndexOptions): Promise<Index<T>>`
 
@@ -549,13 +549,13 @@ Or using the index object:
 
 - Get database stats
 
-`client.stats(): Promise<Stats>`
+`client.getStats(): Promise<Stats>`
 
 ### Version <!-- omit in toc -->
 
 - Get binary version
 
-`client.version(): Promise<Version>`
+`client.getVersion(): Promise<Version>`
 
 ### Dumps <!-- omit in toc -->
 
